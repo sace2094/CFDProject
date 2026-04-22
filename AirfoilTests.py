@@ -209,10 +209,10 @@ seeds = np.column_stack([x, y, z])
 np.savetxt("seeds.csv", seeds, delimiter=",")
 
 particleFile = 'seeds.csv'
-outFileV = 'circle-V.xdmf'
-outFileP = 'circle-P.xdmf'
-forceFile = 'circle-forces.dat'
-imageFile = 'circle-draglift.png'
+outFileV = 'Airfoil-V.xdmf'
+outFileP = 'Airfoil-P.xdmf'
+forceFile = 'Airfoil-forces.dat'
+imageFile = 'Airfoil-draglift.png'
 
 
 
