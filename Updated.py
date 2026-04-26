@@ -203,7 +203,7 @@ def writeGeoFromXYZVarySizing(a_XYZFile, Inputs, a_ParametricSize=True):
         with open(a_XYZFile) as xyzFile:
             Refinement = """
                 h = 1;
-                Chord = 1"""
+                    """
             geoFile.write(Refinement)
 
             next(xyzFile)
@@ -261,47 +261,47 @@ def writeGeoFromXYZVarySizing(a_XYZFile, Inputs, a_ParametricSize=True):
             Physical Curve(4) = {103};    // top
             Physical Curve(5) = {101};    // bottom
             """
-        Fields = """
-                E1 = 0.008;   // near circle
-                E2 = 0.02;  // wake refinement
-                E3 = 0.1;    // far-field
-                
-                Field[1] = Distance;
-                Field[1].CurvesList = {1};
-                Field[1].Sampling = 100;
-                
-                Field[2] = Threshold;
-                Field[2].IField = 1;
-                
-                Field[2].LcMin = E1;
-                Field[2].LcMax = E3;
-                
-                Field[2].DistMin = 0.01;
-                Field[2].DistMax = 0.2;
-                
-                Field[3] = Box;
-                Field[3].VIn  = E2;
-                Field[3].VOut = E3;
-                
-                Field[3].XMin = x + Chord/2;
-                Field[3].XMax = x + Chord*8;
-                Field[3].YMin = y - 1.25*Chord;
-                Field[3].YMax = y + 1.25*Chord;
-                
-                Field[4] = Box;
-                Field[4].VIn  = E1;
-                Field[4].VOut = E3;
-                
-                Field[4].XMin = x - 1.0*Chord;
-                Field[4].XMax = x + 1.0*Chord;
-                Field[4].YMin = y - 1.0*Chord;
-                Field[4].YMax = y + 1.0*Chord;
-                
-                Field[5] = Min;
-                Field[5].FieldsList = {2, 3, 4}; 
-                
-                Background Field = 5;
-                """
+        Fields = f"""
+                        Chord = {Chord};
+                        
+                        E1 = 0.01 * Chord;  // near airfoil
+                        E2 = 0.06  * Chord;  // wake refinement
+                        E3 = 0.5   * Chord;  // far-field
+                        
+                        Field[1] = Distance;
+                        Field[1].CurvesList = {{1}};
+                        Field[1].Sampling = 200;
+                        
+                        Field[2] = Threshold;
+                        Field[2].IField = 1;
+                        Field[2].LcMin = E1;
+                        Field[2].LcMax = E3;
+                        Field[2].DistMin = 0.02 * Chord;
+                        Field[2].DistMax = 0.30 * Chord;
+                        
+                        // wake refinement box
+                        Field[3] = Box;
+                        Field[3].VIn  = E2;
+                        Field[3].VOut = E3;
+                        Field[3].XMin = {0.50 * Chord};
+                        Field[3].XMax = {8.00 * Chord};
+                        Field[3].YMin = {Height - 1.25 * Chord};
+                        Field[3].YMax = {Height + 1.25 * Chord};
+                        
+                        // near-airfoil refinement box
+                        Field[4] = Box;
+                        Field[4].VIn  = E1;
+                        Field[4].VOut = E3;
+                        Field[4].XMin = {-0.50 * Chord};
+                        Field[4].XMax = {1.50 * Chord};
+                        Field[4].YMin = {Height - 1.00 * Chord};
+                        Field[4].YMax = {Height + 1.00 * Chord};
+                        
+                        Field[5] = Min;
+                        Field[5].FieldsList = {{2, 3, 4}};
+                        
+                        Background Field = 5;
+                        """
         geoFile.write(Spline + Line + Points + Lines + Curves + Fields)
 
     geoFile.close()
