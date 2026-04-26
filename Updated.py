@@ -278,19 +278,33 @@ def writeGeoFromXYZVarySizing(a_XYZFile, Inputs, a_ParametricSize=True):
             Field[3].VIn  = E2;
             Field[3].VOut = E3;
 
-            Field[3].XMin = -0.1;
-            Field[3].XMax =  0.1;
-            Field[3].YMin = -0.1;
-            Field[3].YMax =  0.1;
+            //Field[3].XMin = -0.1;
+            //Field[3].XMax =  0.1;
+
+            Field[3].XMin = {0.25*Chord - 0.1}; //Current changes
+            Field[3].XMax = {0.25*Chord + 0.1}; //
+
+            //Field[3].YMin = -0.1;
+            //Field[3].YMax =  0.1;
+
+            Field[3].YMin = {Height - 0.1};  //Current changes
+            Field[3].YMax = {Height + 0.1};  //
 
             Field[4] = Box;
             Field[4].VIn  = E2;
             Field[4].VOut = E3;
 
-            Field[4].XMin = 0.9;
-            Field[4].XMax = 1.1;
-            Field[4].YMin = -0.1;
-            Field[4].YMax = 0.1;
+            //Field[4].XMin = 0.9;
+            //Field[4].XMax = 1.1;
+
+            Field[4].XMin = {0.25*Chord + 0.9*Chord - 0.1}; //Current changes
+            Field[4].XMax = {0.25*Chord + 0.9*Chord + 0.1}; //
+
+            //Field[4].YMin = -0.1;
+            //Field[4].YMax = 0.1;
+
+            Field[4].YMin = {Height - 0.1}; //Current changes
+            Field[4].YMax = {Height + 0.1}; //
 
             Field[5] = Box;
             Field[5].VIn  = E3;
