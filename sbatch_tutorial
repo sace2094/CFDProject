@@ -13,3 +13,5 @@ how to run sbatch file:
 7) to cancel job type "scancel <jobID>"
 
 Right now the job.sh file is setup to run the NewUpdated.py script wiht the NACAPoints.dat file as well, but you could easily change that at the bottom of the job.sh file
+
+Something about mpirun -np 4 python3 NewUpdated.py NACAPoints.dat for multiple nodes to run faster I think
