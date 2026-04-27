@@ -14,7 +14,7 @@ how to run sbatch file:
 
 Right now the job.sh file is setup to run the NewUpdated.py script wiht the NACAPoints.dat file as well, but you could easily change that at the bottom of the job.sh file
 
-RUNNING ON MULTIPLE NODES: 
+running on multiple tasks -- did not work actually
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=8
