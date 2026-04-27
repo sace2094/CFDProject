@@ -1,0 +1,13 @@
+how to run sbatch file:
+
+1) login to rc computing like normal
+- ssh (your email)
+- password
+- cd /scratch/alpine/your_identikey
+2) if you want to receive an email when it starts / ends the job change the code for "job.sh" at the last #SBATCH command to your email instead of mine
+3) if you are ready to run file, type "sbatch job.sh" into the terminal
+4) it should give you like a job number if it started
+- " Submitted batch job 26308341 "
+5) to quick check status type: squeue -j <jobID> (insert whatever actual job id # is, don't include the < and > signs either)
+6) to show the actual output of the script with time and # of iterations and compute time type "tail -f pyjob.<jobID>.out"
+7) to cancel job type "scancel <jobID>"
