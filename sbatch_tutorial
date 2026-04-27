@@ -11,3 +11,5 @@ how to run sbatch file:
 5) to quick check status type: squeue -j <jobID> (insert whatever actual job id # is, don't include the < and > signs either)
 6) to show the actual output of the script with time and # of iterations and compute time type "tail -f pyjob.<jobID>.out"
 7) to cancel job type "scancel <jobID>"
+
+Right now the job.sh file is setup to run the NewUpdated.py script wiht the NACAPoints.dat file as well, but you could easily change that at the bottom of the job.sh file
