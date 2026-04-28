@@ -220,7 +220,7 @@ def writeGeoFromXYZVarySizing(a_XYZFile, Inputs, a_ParametricSize=True):
                 x = x * Chord
                 y = y*Chord
 
-                #y = -y
+                y = -y
 
                 x_new = (x * math.cos(Theta) - y * math.sin(Theta))
                 y_new = (x * math.sin(Theta) + y * math.cos(Theta)) + Height
@@ -332,7 +332,7 @@ ramp_time = 3.0  #new
 density = 1 #standard, was 1.0
 kinematic = viscosity/density
 # Ubar = 2.5  # for laminar
-Ubar = 30.0   # for LES #standard m/s
+Ubar = 15.0   # for LES #standard m/s
 chord = 0.3
 elemType = 'q1p1'
 isSUPG = True
@@ -340,8 +340,8 @@ isPSPG = True
 isLSIC = False
 
 
-height = 4 #how high from ground (will likely get ranged)
-AOA = 5 # degrees, also will get ranged
+height = 1 #how high from ground (will likely get ranged)
+AOA = 2 # degrees, also will get ranged
 chord = 1 #scales chord of airfoil, leave at one for now
 boxH =  9* chord #sets height of bounding box for sim
 boxL = 15 * chord #sets length of bounding box for sim
@@ -444,20 +444,7 @@ bc_TOP_SLIP = dfx.fem.dirichletbc(
     W.sub(0).sub(1)
 )
 
-uD_BOTTOMSlip = dfx.fem.Function(UY_sub)
-uD_BOTTOMSlip.interpolate(topSlipBC)
 
-b_dofs_BOTTOM_SLIP = dfx.fem.locate_dofs_topological(
-    (W.sub(0).sub(1), UY_sub),
-    fdim,
-    facet_markers.find(ID_BOTTOM)
-)
-
-bc_Bottom_SLIP = dfx.fem.dirichletbc(
-    uD_BOTTOMSlip,
-    b_dofs_BOTTOM_SLIP,
-    W.sub(0).sub(1)
-)
 
 
 b_dofs_INLET = dfx.fem.locate_dofs_topological((W.sub(0),U_sub), fdim, facet_markers.find(ID_INLET))
@@ -481,12 +468,12 @@ uD_MovingWall.interpolate(movingWallBC)
 bc_INLET = dfx.fem.dirichletbc(uD_Inlet, b_dofs_INLET, W.sub(0))
 bc_TOP = dfx.fem.dirichletbc(uD_Wall, b_dofs_TOP, W.sub(0))
 bc_OUTLET = dfx.fem.dirichletbc(uD_Outlet, b_dofs_OUTLET, W.sub(1))
-#bc_BOTTOM = dfx.fem.dirichletbc(uD_MovingWall, b_dofs_BOTTOM, W.sub(0))
-bc_BOTTOM = dfx.fem.dirichletbc(uD_Wall, b_dofs_BOTTOM, W.sub(0))
+bc_BOTTOM = dfx.fem.dirichletbc(uD_MovingWall, b_dofs_BOTTOM, W.sub(0))
+#bc_BOTTOM = dfx.fem.dirichletbc(uD_Wall, b_dofs_BOTTOM, W.sub(0))
 bc_CYL = dfx.fem.dirichletbc(uD_Wall, b_dofs_CYL, W.sub(0))
 
-#bc = [bc_INLET, bc_TOP_SLIP, bc_OUTLET, bc_BOTTOM, bc_CYL]
-bc = [bc_INLET, bc_TOP_SLIP, bc_OUTLET, bc_Bottom_SLIP, bc_CYL]
+bc = [bc_INLET, bc_TOP_SLIP, bc_OUTLET, bc_BOTTOM, bc_CYL]
+#bc = [bc_INLET, bc_TOP_SLIP, bc_OUTLET, bc_Bottom_SLIP, bc_CYL]
 
 ds = ufl.Measure("ds", domain=mesh, subdomain_data=facet_markers)
 Gamma_CYL = ds(ID_AIRFOIL)
@@ -620,8 +607,9 @@ while t < t_end:
     #uD_MovingWall.interpolate(lambda x: np.vstack((U_current*np.ones(x.shape[1]), np.zeros(x.shape[1]))))
 
     if t < ramp_time:           #start of recent change
-        alpha = t / ramp_time
-        mu.value = mu_start * (mu_end / mu_start) ** alpha
+        #alpha = t / ramp_time
+        #mu.value = mu_start * (mu_end / mu_start) ** alpha
+        mu.value = mu_start
         
     else: 
         mu.value = mu_end       #end of recent change
